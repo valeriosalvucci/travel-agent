@@ -15,17 +15,50 @@ load_dotenv()
 
 # model = LiteLLMModel(model_id="gpt-3.5-turbo-0125", api_key=os.environ['OPENAI_API_KEY'])
 # model = LiteLLMModel(model_id="gpt-4o", api_key=os.environ['OPENAI_API_KEY'])
-if os.environ.get('USE_GOOGLE_API',False):
+print(os.environ.get('USE_GOOGLE_API',"YOOO"))
+
+if os.environ.get('USE_GOOGLE_API',True):
     model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
 else:
     model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
 
 agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool()], model=model)
 # agent = CodeAgent(tools=[DuckDuckGoSearchTool()], model=model)
-agent.run("Find activities to do in Tokyo on 16/02/2025")
 
-print(agent.memory)
+def make_activities(location, daterange, comments):
+    agent.run(f"Find activities to do in {location} on {daterange}, considering user comments {comments}")
+    return agent.memory
 
+
+def make_restaurants(location, daterange, comments):
+    agent.run(f"Find restaurants to eat in {location} on {daterange}, considering preferences, if any, in user comments {comments}")
+    return agent.memory
+
+
+def summarize_itinerary(location, daterange, comments, activities, restaurants, events):
+    agent.run(f"""
+Create an itinerary in location {location} on {daterange}, 
+for a user that expressed a desire for {comments if comments else 'no preferences'},
+given these possible activities {activities}, restaurants {restaurants}, and events {events}
+""")
+
+
+# @app.post("/upload")
+# async def upload(
+#     destination: str, daterange: str, comments: str
+# ):
+#     places = []
+#     restaurants = []
+#     activities = []
+    
+#     activities = make_activities(destination, daterange, comments)
+#     result = f"""
+#     here are my suggestions for {daterange} in {destination}, considering your comments: {comments}
+#     places {places}
+#     restaurants {restaurants}
+#     activities {activities}
+#     """
+    # return result
 
 
 # class DuckDuckGoSearchTool(Tool):
@@ -92,3 +125,50 @@ def get_weather(location: str, celsius: Optional[bool] = True) -> str:
 #         return f"The weather in {location} is sunny with temperatures around {'10 Celsius' if celsius else '50 Fahrenheit'}."
 
 # agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool(),GetWeather()], model=model) #, can't manage to pass function arguments properly
+
+
+
+# from typing import Optional
+# from smolagents import CodeAgent, HfApiModel, tool
+
+# @tool
+# def get_travel_duration(start_location: str, destination_location: str, departure_time: Optional[int] = None) -> str:
+#     """Gets the travel time in car between two places.
+    
+#     Args:
+#         start_location: the place from which you start your ride
+#         destination_location: the place of arrival
+#         departure_time: the departure time, provide only a datetime.datetime if you want to specify this
+#     """
+#     import googlemaps
+#     import os
+#     from datetime import datetime
+
+#     gmaps = googlemaps.Client(os.getenv("GMAPS_API_KEY"))
+
+#     if departure_time is None:
+#         departure_time = datetime.now()
+
+#     directions_result = gmaps.directions(
+#         start_location,
+#         destination_location,
+#         mode="transit",
+#         departure_time=departure_time
+#     )
+#     return directions_result[0]["legs"][0]["duration"]["text"]
+
+# # Initialize the agent with the custom tool
+# agent = CodeAgent(tools=[get_travel_duration], model=HfApiModel(), additional_authorized_imports=["datetime"])
+
+# # Run the agent with a travel planning request
+# agent.run("Can you give me a nice one-day trip around Paris with a few locations and the times? Co
+          
+# from smolagents import CodeAgent, HfApiModel, GoogleSearchTool
+
+# # Initialize the agent with the search tool and the Hugging Face model
+# google_search = GoogleSearchTool() # Requires SerpAPI key in environment variables
+
+# agent = CodeAgent(
+#     tools=[google_search], 
+#     model=HfApiModel(model_id="Qwen/Qwen2.5-Coder-32B-Instruct",token="<your_hf_token>")
+#     )

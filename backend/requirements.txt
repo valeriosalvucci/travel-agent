@@ -1,5 +1,5 @@
 litellm
 requests
-smolagents==1.8.0
+smolagents
 fastapi
 uvicorn
