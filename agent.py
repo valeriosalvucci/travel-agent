@@ -2,6 +2,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
+
 from smolagents import LiteLLMModel, HfApiModel, CodeAgent, ToolCallingAgent
 from smolagents import DuckDuckGoSearchTool, PythonInterpreterTool, tool, Tool
 from typing import Optional
@@ -10,10 +11,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# print(os.environ['ANTHROPIC_API_KEY'])
+
 # model = LiteLLMModel(model_id="gpt-3.5-turbo-0125", api_key=os.environ['OPENAI_API_KEY'])
 # model = LiteLLMModel(model_id="gpt-4o", api_key=os.environ['OPENAI_API_KEY'])
-model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
-# model = HfApiModel(model_id="claude-3-opus-20240229", api_key=os.environ['ANTHROPIC_API_KEY'])
+# model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
+model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
 
 agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool()], model=model)
 # agent = CodeAgent(tools=[DuckDuckGoSearchTool()], model=model)
