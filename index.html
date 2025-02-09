@@ -1,9 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickVibes - Travel plan fast with AI</title>
+    <title>Wonderplan - Travel Preferences</title>
+
+<!-- boostrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Moment.js -->
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<!-- Date Range Picker CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<!-- Date Range Picker JS -->
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
     <style>
         * {
             margin: 0;
@@ -161,13 +175,13 @@
             background-color: #1f2937;
         }
 
-        .vibe-options {
+        .travel-options {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 1rem;
         }
 
-        .vibe-option {
+        .travel-option {
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             padding: 1rem;
@@ -176,11 +190,11 @@
             transition: all 0.2s ease;
         }
 
-        .vibe-option:hover {
+        .travel-option:hover {
             background-color: #f9fafb;
         }
 
-        .vibe-option.selected {
+        .travel-option.selected {
             background-color: #111827;
             color: white;
             border-color: #111827;
@@ -197,29 +211,94 @@
             }
         }
     </style>
+
+<script>
+    $(document).ready(function() {
+
+      $('#daterange').daterangepicker(
+        {
+          locale: {
+            format: 'YYYY-MM-DD'
+          },
+          startDate: moment().startOf('month'),
+          endDate: moment().endOf('month')
+        },
+        function(start, end, label) {
+          var date_start = start.format('YYYY-MM-DD');
+          var date_end = end.format('YYYY-MM-DD');
+          console.log('Date range selected: ' + date_start + ' to ' + date_end);
+        }
+      );
+
+        const form = document.getElementById('travel-form');
+        const vibeOptions = document.querySelectorAll('.travel-vibes .travel-option');
+        const travelWithOptions = document.querySelectorAll('.travel-with .travel-option');
+   
+        vibeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                vibeOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                selectedVibe = option.dataset.vibe;
+            });
+
+        });  
+
+        travelWithOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                travelWithOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                selectedTravelWith = option.dataset.with;
+            });
+
+        });
+
+        $('#travel-form').submit(function(e) {
+            e.preventDefault();
+            var destination = $('input[name="destination"]').val();
+            var date_range = $('#daterange').val();
+            var comments = $('#comments').val();
+            // var vibe = $('.travel-option.selected').data('vibe');
+            var vibe = $('.travel-vibes .travel-option.selected').data('vibe');
+            // var travel_with = $('.travel-with-option.selected').data('with');
+            var travel_with = $('.travel-with .travel-option.selected').data('with');
+
+            console.log('Destination: ' + destination);
+            console.log('Date Range: ' + date_range);
+            console.log('Vibe: ' + vibe);
+            console.log('Travel With: ' + travel_with);
+            console.log('Comments: ' + comments);
+        });
+
+
+    });
+  </script>    
 </head>
 <body>
     <nav>
         <div class="nav-left">
             <div class="logo">Wonderplan</div>
-            <!-- <div class="nav-links">
+            <div class="nav-links">
                 <a href="#">Blog</a>
                 <a href="#">Trip Planner</a>
                 <a href="#">Deals</a>
-            </div> -->
+            </div>
         </div>
-        <!-- <button class="sign-in">Sign In</button> -->
+        <button class="sign-in">Sign In</button>
     </nav>
 
-    <main>
+    <div class="container">
         <h1>Tell us your travel preferences</h1>
-        <p class="subtitle">Just provide some basic information, and our trip planner AI agent will generate a customized itinerary based on your preferences.</p>
+        <p class="subtitle">Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.</p>
 
         <form id="travel-form">
             <div class="form-group">
-                <label>What is your destination of choice?</label>
+                <label>What is destination of choice?</label>
                 <div class="input-wrapper">
-                    <input type="text" value="Clavius Base...">
+                    <input type="text" name="destination" value="Tokyo, Japan" placeholder="Enter destination" required />
                     <svg class="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M6 9l6 6 6-6"/>
                     </svg>
@@ -227,52 +306,34 @@
             </div>
 
             <div class="form-group">
-                <label>When are you planning to travel?</label>
-                <input type="text" placeholder="Select Date..">
-            </div>
+                <label for="daterange">Select Date Range:</label>
+                <input type="text" name="daterange" id="daterange" class="form-control" placeholder="Choose date range" />
+             </div>
 
-            <div class="form-group">
-                <label>How many days are you planning to travel?</label>
-                <div class="counter-wrapper">
-                    <span class="counter-label">Day</span>
-                    <button type="button" class="counter-btn" id="decrease">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14"/>
-                        </svg>
-                    </button>
-                    <span class="counter-value" id="days">3</span>
-                    <button type="button" class="counter-btn" id="increase">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14m-7-7h14"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-group">
+             <div class="form-group">
                 <label>What type of vibe?</label>
-                <div class="vibe-options">
-                    <div class="vibe-option" data-vibe="relaxing">
+                <div class="travel-options travel-vibes">
+                    <div class="travel-option" data-vibe="relaxing">
                         <div class="vibe-icon">🌴</div>
                         <div>Relaxing</div>
                     </div>
-                    <div class="vibe-option" data-vibe="adventure">
+                    <div class="travel-option" data-vibe="adventure">
                         <div class="vibe-icon">🏃‍♂️</div>
                         <div>Adventure</div>
                     </div>
-                    <div class="vibe-option" data-vibe="cultural">
+                    <div class="travel-option" data-vibe="cultural">
                         <div class="vibe-icon">🏛️</div>
                         <div>Cultural</div>
                     </div>
-                    <div class="vibe-option" data-vibe="nightlife">
+                    <div class="travel-option" data-vibe="nightlife">
                         <div class="vibe-icon">🌙</div>
                         <div>Nightlife</div>
                     </div>
-                    <div class="vibe-option" data-vibe="foodie">
+                    <div class="travel-option" data-vibe="foodie">
                         <div class="vibe-icon">🍽️</div>
                         <div>Foodie</div>
                     </div>
-                    <div class="vibe-option" data-vibe="shopping">
+                    <div class="travel-option" data-vibe="shopping">
                         <div class="vibe-icon">🛍️</div>
                         <div>Shopping</div>
                     </div>
@@ -282,74 +343,38 @@
             <!-- WHO DO YOU WANT TO TRAVEL WITH? -->
             <div class="form-group">
                 <label>Who do you plan on traveling with?</label>
-                <div class="vibe-options">
-                    <div class="vibe-option" data-vibe="relaxing">
+                <div class="travel-options travel-with">
+                    <div class="travel-option" data-with="solo">
                         <div class="vibe-icon">🏃‍♂️</div>
                         <div>Solo</div>
                     </div>
-                    <div class="vibe-option" data-vibe="cultural">
+                    <div class="travel-option" data-with="partner">
                         <div class="vibe-icon">💘</div>
                         <div>Partner</div>
                     </div>
-                    <div class="vibe-option" data-vibe="adventure">
+                    <div class="travel-option" data-with="friends">
                         <div class="vibe-icon">🎉</div>
                         <div>Friends</div>
                     </div>
-                    <div class="vibe-option" data-vibe="adventure">
+                    <div class="travel-option" data-with="parents">
                         <div class="vibe-icon">🧓🏻</div>
                         <div>Parents</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SUBMIT -->
-            <div class="submit-wrapper">
-                <button type="submit" class="submit-btn">Submit</button>
+            <!-- add a textarea to collect user comments-->
+            <div class="form-group">
+                <label for="comments">Additional Comments?</label>
+                <textarea class="form-control"  name="comments" id="comments" rows="4"></textarea>
             </div>
-            <!-- NEXT SCREEN SHOULD BE THE CHATGPT OUTPUT SCREEN, WITH A LOADER IN THE MIDDLE -->
 
+            <div class="submit-wrapper">
+                <button id="input-sumbit" type="submit" class="submit-btn">Submit</button>
+            </div>
         </form>
-    </main>
+    </div>
 
-    <script>
-        const daysElement = document.getElementById('days');
-        const decreaseBtn = document.getElementById('decrease');
-        const increaseBtn = document.getElementById('increase');
-        const form = document.getElementById('travel-form');
-        const vibeOptions = document.querySelectorAll('.vibe-option');
 
-        let days = 3;
-        let selectedVibe = null;
-
-        decreaseBtn.addEventListener('click', () => {
-            if (days > 1) {
-                days--;
-                daysElement.textContent = days;
-            }
-        });
-
-        increaseBtn.addEventListener('click', () => {
-            days++;
-            daysElement.textContent = days;
-        });
-
-        vibeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Remove selected class from all options
-                vibeOptions.forEach(opt => opt.classList.remove('selected'));
-                // Add selected class to clicked option
-                option.classList.add('selected');
-                selectedVibe = option.dataset.vibe;
-            });
-        });
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            console.log('Form submitted', {
-                days,
-                selectedVibe
-            });
-        });
-    </script>
 </body>
 </html>
