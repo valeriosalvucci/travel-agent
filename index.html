@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wonderplan - Travel Preferences</title>
+    <title>QuickVibes - Travel plan fast with AI</title>
     <style>
         * {
             margin: 0;
@@ -161,6 +161,36 @@
             background-color: #1f2937;
         }
 
+        .vibe-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .vibe-option {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .vibe-option:hover {
+            background-color: #f9fafb;
+        }
+
+        .vibe-option.selected {
+            background-color: #111827;
+            color: white;
+            border-color: #111827;
+        }
+
+        .vibe-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
         @media (max-width: 640px) {
             .nav-links {
                 display: none;
@@ -172,24 +202,24 @@
     <nav>
         <div class="nav-left">
             <div class="logo">Wonderplan</div>
-            <div class="nav-links">
+            <!-- <div class="nav-links">
                 <a href="#">Blog</a>
                 <a href="#">Trip Planner</a>
                 <a href="#">Deals</a>
-            </div>
+            </div> -->
         </div>
-        <button class="sign-in">Sign In</button>
+        <!-- <button class="sign-in">Sign In</button> -->
     </nav>
 
     <main>
         <h1>Tell us your travel preferences</h1>
-        <p class="subtitle">Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.</p>
+        <p class="subtitle">Just provide some basic information, and our trip planner AI agent will generate a customized itinerary based on your preferences.</p>
 
         <form id="travel-form">
             <div class="form-group">
-                <label>What is destination of choice?</label>
+                <label>What is your destination of choice?</label>
                 <div class="input-wrapper">
-                    <input type="text" value="New York">
+                    <input type="text" value="Clavius Base...">
                     <svg class="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M6 9l6 6 6-6"/>
                     </svg>
@@ -219,9 +249,65 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>What type of vibe?</label>
+                <div class="vibe-options">
+                    <div class="vibe-option" data-vibe="relaxing">
+                        <div class="vibe-icon">🌴</div>
+                        <div>Relaxing</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="adventure">
+                        <div class="vibe-icon">🏃‍♂️</div>
+                        <div>Adventure</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="cultural">
+                        <div class="vibe-icon">🏛️</div>
+                        <div>Cultural</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="nightlife">
+                        <div class="vibe-icon">🌙</div>
+                        <div>Nightlife</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="foodie">
+                        <div class="vibe-icon">🍽️</div>
+                        <div>Foodie</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="shopping">
+                        <div class="vibe-icon">🛍️</div>
+                        <div>Shopping</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WHO DO YOU WANT TO TRAVEL WITH? -->
+            <div class="form-group">
+                <label>Who do you plan on traveling with?</label>
+                <div class="vibe-options">
+                    <div class="vibe-option" data-vibe="relaxing">
+                        <div class="vibe-icon">🏃‍♂️</div>
+                        <div>Solo</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="cultural">
+                        <div class="vibe-icon">💘</div>
+                        <div>Partner</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="adventure">
+                        <div class="vibe-icon">🎉</div>
+                        <div>Friends</div>
+                    </div>
+                    <div class="vibe-option" data-vibe="adventure">
+                        <div class="vibe-icon">🧓🏻</div>
+                        <div>Parents</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBMIT -->
             <div class="submit-wrapper">
                 <button type="submit" class="submit-btn">Submit</button>
             </div>
+            <!-- NEXT SCREEN SHOULD BE THE CHATGPT OUTPUT SCREEN, WITH A LOADER IN THE MIDDLE -->
+
         </form>
     </main>
 
@@ -230,8 +316,10 @@
         const decreaseBtn = document.getElementById('decrease');
         const increaseBtn = document.getElementById('increase');
         const form = document.getElementById('travel-form');
+        const vibeOptions = document.querySelectorAll('.vibe-option');
 
         let days = 3;
+        let selectedVibe = null;
 
         decreaseBtn.addEventListener('click', () => {
             if (days > 1) {
@@ -245,9 +333,22 @@
             daysElement.textContent = days;
         });
 
+        vibeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                vibeOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+                selectedVibe = option.dataset.vibe;
+            });
+        });
+
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            console.log('Form submitted');
+            console.log('Form submitted', {
+                days,
+                selectedVibe
+            });
         });
     </script>
 </body>
