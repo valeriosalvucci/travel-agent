@@ -271,6 +271,26 @@
             console.log('Vibe: ' + vibe);
             console.log('Travel With: ' + travel_with);
             console.log('Comments: ' + comments);
+
+            // call server with get method '/healthcheck'
+            // $.get('http://127.0.0.1:8000/healthcheck', function(response) {
+            //     console.log(response);
+            // });
+            // Send data to server '/upload'
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: {
+                    destination: destination,
+                    date_range: date_range,
+                    vibe: vibe,
+                    travel_with: travel_with,
+                    comments: comments
+                },
+                success: function(response) {
+                    console.log(response);
+                }
+            });
         });
 
 

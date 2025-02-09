@@ -1,21 +1,22 @@
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-import uvicorn
-from agent import make_activities
+
 app = FastAPI()
 
 # Define the path to the directory containing index.html
-static_dir = Path(__file__).parent.parent / "index.html"
+base_path = Path(__file__).resolve().parent.parent
+index_file = base_path / "index.html"
 
-# Mount the static directory
-app.mount("/", StaticFiles(directory=static_dir.parent, html=True), name="static")
+# Serve the index.html at the root URL
+@app.get("/")
+async def serve_index():
+    return FileResponse(index_file)
 
-# @app.get("/")
-# async def root():
-#     # use static file html
-#     return {"message": "Hello World"}
-#     # return {"message": "Hello World"}
+# Mount the static directory for other static assets
+static_dir = base_path / "static"
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 @app.get("/healthcheck")
 async def healthcheck():
@@ -31,12 +32,9 @@ async def upload(
     
     # activities = make_activities(destination, daterange, comments)
     result = f"""
-    here are my suggestions for {daterange} in {destination}, considering your comments: {comments}
-    places {places}
-    restaurants {restaurants}
-    activities {activities}
+    Here are my suggestions for {daterange} in {destination}, considering your comments: {comments}
+    Places: {places}
+    Restaurants: {restaurants}
+    Activities: {activities}
     """
     return result
-
-# if __name__ == "__main__":
-#     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
