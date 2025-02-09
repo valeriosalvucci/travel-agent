@@ -15,8 +15,10 @@ load_dotenv()
 
 # model = LiteLLMModel(model_id="gpt-3.5-turbo-0125", api_key=os.environ['OPENAI_API_KEY'])
 # model = LiteLLMModel(model_id="gpt-4o", api_key=os.environ['OPENAI_API_KEY'])
-# model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
-model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
+if os.environ.get('USE_GOOGLE_API',True):
+    model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
+else:
+    model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
 
 agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool()], model=model)
 # agent = CodeAgent(tools=[DuckDuckGoSearchTool()], model=model)
