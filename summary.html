@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Itinerary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 100px; /* Added space for the bottom button */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .redo-plan {
+            padding: 6px 12px;
+            border: 1px solid #000;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+            transition: background-color 0.2s;
+        }
+
+        .redo-plan:hover {
+            background-color: #f0f0f0;
+        }
+
+        .day-header {
+            cursor: pointer;
+            padding: 10px 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .day-date {
+            color: #666;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .location-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+        }
+
+        .location-number {
+            width: 24px;
+            height: 24px;
+            background: #000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .location-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .location-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .location-meta {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .location-image {
+            width: 120px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .chevron {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .day-content {
+            transition: max-height 0.3s ease-out;
+            overflow: hidden;
+        }
+
+        .collapsed .day-content {
+            max-height: 0;
+        }
+
+        /* New styles for the Change Vibes button */
+        .change-vibes-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(245,245,245,1) 60%, rgba(245,245,245,0));
+            display: flex;
+            justify-content: center;
+        }
+
+        .change-vibes-btn {
+            background-color: #000;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .change-vibes-btn:hover {
+            transform: translateY(-2px);
+            background-color: #333;
+        }
+
+        .change-vibes-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>[Location] Itinerary</h1>
+        <!-- <button class="redo-plan">Go Back</button> -->
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-section">
+        <div class="day-header">
+            <span class="chevron">▼</span> Day 1
+            <div class="day-date">Sun,09 Feb</div>
+        </div>
+        <div class="day-content">
+            <!-- ITINERARY CARDS -->
+            <div class="location-card">
+                <div>
+                    <div class="location-number">1</div>
+                    <a href="#" class="location-title">Tsukiji Outer Market</a>
+                    <div class="location-description">A bustling market offering fresh seafood, local produce, and souvenirs.</div>
+                    <div class="location-meta">⏱ 120 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Tsukiji Market" class="location-image">
+            </div>
+            <div class="location-card">
+                <div>
+                    <div class="location-number">2</div>
+                    <a href="#" class="location-title">Senso-ji Temple</a>
+                    <div class="location-description">Tokyo's oldest temple, Senso-ji is dedicated to the goddess of mercy, Kannon.</div>
+                    <div class="location-meta">⏱ 90 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Senso-ji Temple" class="location-image">
+            </div>
+            <div class="location-card">
+                <div>
+                    <div class="location-number">3</div>
+                    <a href="#" class="location-title">Senso-ji Temple</a>
+                    <div class="location-description">Tokyo's oldest temple, Senso-ji is dedicated to the goddess of mercy, Kannon.</div>
+                    <div class="location-meta">⏱ 90 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Senso-ji Temple" class="location-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- DAY TWO -->
+    <div class="day-section">
+        <div class="day-header">
+            <span class="chevron">▼</span> Day 2
+            <div class="day-date">Mon,10 Feb</div>
+        </div>
+
+        <!-- DAY 2 -->
+        <div class="day-content">    
+            <!-- ITINERARY CARDS -->
+            <div class="location-card">
+                <div>
+                    <div class="location-number">1</div>
+                    <a href="#" class="location-title">Shinjuku Gyoen National Garden</a>
+                    <div class="location-description">A serene oasis in bustling Tokyo, Shinjuku Gyoen National Garden offers a tranquil escape with diverse gardens and historical significance.</div>
+                    <div class="location-meta">⏱ 120 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Shinjuku Gyoen" class="location-image">
+            </div>
+            <div class="location-card">
+                <div>
+                    <div class="location-number">2</div>
+                    <a href="#" class="location-title">Shinjuku Gyoen National Garden</a>
+                    <div class="location-description">A serene oasis in bustling Tokyo, Shinjuku Gyoen National Garden offers a tranquil escape with diverse gardens and historical significance.</div>
+                    <div class="location-meta">⏱ 120 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Shinjuku Gyoen" class="location-image">
+            </div>
+            <div class="location-card">
+                <div>
+                    <div class="location-number">3</div>
+                    <a href="#" class="location-title">Shinjuku Gyoen National Garden</a>
+                    <div class="location-description">A serene oasis in bustling Tokyo, Shinjuku Gyoen National Garden offers a tranquil escape with diverse gardens and historical significance.</div>
+                    <div class="location-meta">⏱ 120 min • Tokyo</div>
+                </div>
+                <img src="/api/placeholder/120/80" alt="Shinjuku Gyoen" class="location-image">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="change-vibes-container">
+        <button class="change-vibes-btn">Change Vibes</button>
+    </div>
+
+    <script>
+        document.querySelectorAll('.day-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const section = header.parentElement;
+                section.classList.toggle('collapsed');
+            });
+        });
+    </script>
+</body>
+</html>
