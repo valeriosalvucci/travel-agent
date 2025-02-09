@@ -3,3 +3,5 @@ requests
 smolagents
 fastapi
 uvicorn
+serpapi
+python-multipart

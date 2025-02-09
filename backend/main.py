@@ -1,8 +1,12 @@
+
 from fastapi import FastAPI, Form
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
+from fastapi import FastAPI
+import uvicorn
+from agent import make_activities, make_restaurants, make_events, summarize_itinerary, make_fe
 app = FastAPI()
 
 # Define the path to the directory containing index.html
@@ -31,10 +35,23 @@ async def upload(
     comments: str = Form(...)
 ):
     # Process the form data as needed
-    result = f"""
-    Here are my suggestions for {date_range} in {destination}, considering your preferences:
-    - Vibe: {vibe}
-    - Traveling with: {travel_with}
-    - Additional comments: {comments}
-    """
-    return {"message": result}
+    events = []
+    restaurants = []
+    activities = []
+    
+    activities = make_activities(destination, date_range, comments)
+    # restaurants = make_restaurants(destination, daterange, comments)
+    events = make_events(destination, date_range, comments)
+    # result = f"""
+    # here are my suggestions for {daterange} in {destination}, considering your comments: {comments}
+    # events {events}
+    # restaurants {restaurants}
+    # activities {activities}
+    # """
+    result = summarize_itinerary(destination, date_range, comments, activities, restaurants, events)
+    
+    # result = make_fe(destination, daterange, comments, activities, restaurants, events)
+    return result
+
+# if __name__ == "__main__":
+#     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=False)
