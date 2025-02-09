@@ -19,11 +19,6 @@ load_dotenv()
 # print(os.environ.get('USE_GOOGLE_API',"YOOO"))
 
 # if os.environ.get('USE_GOOGLE_API',True):
-#     model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
-# else:
-# model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
-
-# if os.environ.get('USE_GOOGLE_API',True):
 model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['GOOGLE_API_KEY'])
 # else:
 #model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
@@ -39,19 +34,19 @@ Find activities to do in {location} on {daterange}, considering user comments {c
     return agent.memory
 
 
-def make_restaurants(location, daterange, comments):
-    api_key= "96eca78c229bbf08125eb97742e57715c02f2aaf0754ea0be60e6b7d8385fb2d"
-    # from serpapi import GoogleSearch
-    params = {
-    "engine": "google",
-    "q": "find 10 restaurants in {location}",
-    "api_key": api_key
-    }
-    results = serpapi.search(params)
+# def make_restaurants(location, daterange, comments):
+#     api_key= os.environ.get('SERP_API_KEY','')
+#     # from serpapi import GoogleSearch
+#     params = {
+#     "engine": "google",
+#     "q": "find 10 restaurants in {location}",
+#     "api_key": api_key
+#     }
+#     results = serpapi.search(params)
 
-    r =  agent.run(f"extract restaurants from {results} considering {comments}")
+#     r =  agent.run(f"extract restaurants from {results} considering {comments}")
 
-    return r
+#     return r
 
 def make_events(location, daterange, comments):
     r = agent.run(f"""
