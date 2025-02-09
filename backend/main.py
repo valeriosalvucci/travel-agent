@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Form
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -24,17 +24,17 @@ async def healthcheck():
 
 @app.post("/upload")
 async def upload(
-    destination: str = "Tokyo", daterange: str = "2025-02-15 - 2025-02-20", comments: str = "I love art and ramen"
+    destination: str = Form(...),
+    date_range: str = Form(...),
+    vibe: str = Form(...),
+    travel_with: str = Form(...),
+    comments: str = Form(...)
 ):
-    places = []
-    restaurants = []
-    activities = []
-    
-    # activities = make_activities(destination, daterange, comments)
+    # Process the form data as needed
     result = f"""
-    Here are my suggestions for {daterange} in {destination}, considering your comments: {comments}
-    Places: {places}
-    Restaurants: {restaurants}
-    Activities: {activities}
+    Here are my suggestions for {date_range} in {destination}, considering your preferences:
+    - Vibe: {vibe}
+    - Traveling with: {travel_with}
+    - Additional comments: {comments}
     """
-    return result
+    return {"message": result}
