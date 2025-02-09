@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonderplan - Travel Preferences</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #4b5563;
+            text-decoration: none;
+        }
+
+        .sign-in {
+            background-color: #111827;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        main {
+            max-width: 768px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #4b5563;
+            margin-bottom: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #9ca3af;
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .counter-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .counter-label {
+            color: #4b5563;
+        }
+
+        .counter-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .counter-btn:hover {
+            background: #f9fafb;
+        }
+
+        .counter-value {
+            font-size: 1.25rem;
+            width: 2rem;
+            text-align: center;
+        }
+
+        .submit-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 3rem;
+        }
+
+        .submit-btn {
+            background-color: #111827;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #1f2937;
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <div class="logo">Wonderplan</div>
+            <div class="nav-links">
+                <a href="#">Blog</a>
+                <a href="#">Trip Planner</a>
+                <a href="#">Deals</a>
+            </div>
+        </div>
+        <button class="sign-in">Sign In</button>
+    </nav>
+
+    <main>
+        <h1>Tell us your travel preferences</h1>
+        <p class="subtitle">Just provide some basic information, and our trip planner will generate a customized itinerary based on your preferences.</p>
+
+        <form id="travel-form">
+            <div class="form-group">
+                <label>What is destination of choice?</label>
+                <div class="input-wrapper">
+                    <input type="text" value="New York">
+                    <svg class="dropdown-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>When are you planning to travel?</label>
+                <input type="text" placeholder="Select Date..">
+            </div>
+
+            <div class="form-group">
+                <label>How many days are you planning to travel?</label>
+                <div class="counter-wrapper">
+                    <span class="counter-label">Day</span>
+                    <button type="button" class="counter-btn" id="decrease">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14"/>
+                        </svg>
+                    </button>
+                    <span class="counter-value" id="days">3</span>
+                    <button type="button" class="counter-btn" id="increase">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14m-7-7h14"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="submit-wrapper">
+                <button type="submit" class="submit-btn">Submit</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        const daysElement = document.getElementById('days');
+        const decreaseBtn = document.getElementById('decrease');
+        const increaseBtn = document.getElementById('increase');
+        const form = document.getElementById('travel-form');
+
+        let days = 3;
+
+        decreaseBtn.addEventListener('click', () => {
+            if (days > 1) {
+                days--;
+                daysElement.textContent = days;
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            days++;
+            daysElement.textContent = days;
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            console.log('Form submitted');
+        });
+    </script>
+</body>
+</html>
