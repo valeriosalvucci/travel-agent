@@ -28,11 +28,11 @@ async def healthcheck():
 
 @app.post("/upload")
 async def upload(
-    destination: str = Form(...),
-    date_range: str = Form(...),
-    vibe: str = Form(...),
-    travel_with: str = Form(...),
-    comments: str = Form(...)
+    destination: str = Form("Tokyo"),
+    date_range: str = Form("2025-02-19 - 2025-02-23"),
+    vibe: str = Form("Fun"),
+    travel_with: str = Form("Friends"),
+    comments: str = Form("I love art and ramen")
 ):
     # Process the form data as needed
     events = []

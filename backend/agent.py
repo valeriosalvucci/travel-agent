@@ -29,6 +29,7 @@ model = LiteLLMModel(model_id="gemini/gemini-2.0-pro-exp" , api_key=os.environ['
 #model = LiteLLMModel(model_id="claude-3-haiku-20240307", api_key=os.environ['ANTHROPIC_API_KEY'])
 
 agent = ToolCallingAgent(tools=[DuckDuckGoSearchTool()], model=model)
+agent2 = ToolCallingAgent(tools=[], model=model)
 # agent = CodeAgent(tools=[DuckDuckGoSearchTool()], model=model)
 
 def make_activities(location, daterange, comments):
@@ -61,15 +62,23 @@ if any, in user comments {comments}
 
 
 def summarize_itinerary(location, daterange, comments, activities, restaurants, events):
-    r = agent.run(f"""
+    r = agent2.run(f"""
 Create an itinerary in location {location} on {daterange}, 
-for a user that expressed a desire for {comments if comments else 'no preferences'},
-given these possible activities {activities}, and events {events}
+For a user that expressed a desire for {comments if comments else 'no preferences'},
+Given these possible activities
+---
+{activities}
+---
+
+and events 
+--- 
+{events}
+---
 """)
     return r
 
 def make_fe(location, daterange, comments, activities, restaurants, events):
-    r = agent.run(f"""
+    r = agent2.run(f"""
 Plan a travel itinerary trip for me that includes two types of things to do in the itinerary: 
 Activities to do on that given day, and events to attend on that given day. 
 You will be provided with the following information to help tune my trip: 
